@@ -1,4 +1,6 @@
-/* ===== Reset & Variables ===== */
+/* ========================================== */
+/* RESET & VARIABLES */
+/* ========================================== */
 * {
     margin: 0;
     padding: 0;
@@ -367,6 +369,8 @@ html, body {
     padding: 2rem;
     overflow-y: auto;
     flex: 1;
+    padding-bottom: 4rem; /* ✅ مساحة في الأسفل */
+    min-height: calc(100vh - 80px); /* ✅ ضمان عدم الخروج من الشاشة */
 }
 
 .content-section.active {
@@ -676,6 +680,7 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+    padding-bottom: 3rem; /* ✅ مساحة إضافية في الأسفل */
 }
 
 .item-card {
@@ -871,6 +876,7 @@ html, body {
     align-items: center;
     justify-content: center;
     padding: 1rem;
+    overflow-y: auto; /* ✅ السماح بالتمرير */
 }
 
 .modal.active {
@@ -883,11 +889,12 @@ html, body {
     border-radius: 16px;
     width: 100%;
     max-width: 600px;
-    max-height: 90vh;
+    max-height: 85vh; /* ✅ ضمان عدم الخروج من الشاشة */
     overflow: hidden;
     display: flex;
     flex-direction: column;
     animation: modalSlide 0.3s ease;
+    margin: auto 0; /* ✅ التوسيط العمودي */
 }
 
 .modal-small {
@@ -1103,12 +1110,14 @@ html, body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .activity-list {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    padding-bottom: 3rem;
 }
 
 .activity-item {
@@ -1119,6 +1128,11 @@ html, body {
     display: flex;
     align-items: center;
     gap: 1rem;
+    transition: transform 0.2s;
+}
+
+.activity-item:hover {
+    transform: translateX(-3px);
 }
 
 .activity-icon {
@@ -1150,6 +1164,11 @@ html, body {
 .activity-meta {
     font-size: 0.8rem;
     color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.activity-meta strong {
+    color: var(--text-primary);
 }
 
 /* ===== Settings ===== */
@@ -1159,6 +1178,7 @@ html, body {
     border-radius: 16px;
     padding: 2rem;
     max-width: 600px;
+    margin-bottom: 2rem;
 }
 
 .settings-card h3 {
@@ -1202,34 +1222,9 @@ html, body {
 .settings-group input:focus {
     border-color: var(--accent-green);
 }
-/* ========================================== */
-/* ✅ بطاقة الموهبة الموسعة (كل المعلومات) */
-/* ========================================== */
-.talent-card {
-    position: relative;
-}
-
-/* ✅ تمييز بطاقات القاصرين بلون تحذيري */
-.minor-card {
-    border-right: 4px solid #fbbf24;
-}
-
-.minor-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    padding: 0.2rem 0.6rem;
-    background: rgba(251, 191, 36, 0.15);
-    color: #fbbf24;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    margin-right: 0.5rem;
-    vertical-align: middle;
-}
 
 /* ========================================== */
-/* ✅ قسم معلومات ولي الأمر */
+/* ✅ Guardian Section Styling */
 /* ========================================== */
 .guardian-section {
     margin-top: 1rem;
@@ -1237,7 +1232,7 @@ html, body {
     background: rgba(251, 191, 36, 0.05);
     border: 1px solid rgba(251, 191, 36, 0.2);
     border-radius: 12px;
-    display: none; /* مخفي افتراضياً، يظهر عند التوسيع */
+    display: none; /* مخفي افتراضياً */
 }
 
 .talent-card.expanded .guardian-section {
@@ -1287,15 +1282,13 @@ html, body {
     margin-left: 0.3rem;
 }
 
-/* ========================================== */
-/* ✅ قسم روابط التواصل الاجتماعي */
-/* ========================================== */
+/* Social Links Section */
 .social-links-section {
     margin-top: 1rem;
     padding: 1rem;
     background: var(--bg-card);
     border-radius: 12px;
-    display: none; /* مخفي افتراضياً */
+    display: none;
 }
 
 .talent-card.expanded .social-links-section {
@@ -1345,9 +1338,7 @@ html, body {
     font-size: 0.8rem;
 }
 
-/* ========================================== */
-/* ✅ زر توسيع/طي التفاصيل */
-/* ========================================== */
+/* Toggle Button */
 .btn-toggle-details {
     background: var(--bg-tertiary) !important;
     color: var(--text-secondary) !important;
@@ -1359,54 +1350,28 @@ html, body {
     border-color: var(--accent-green) !important;
 }
 
-/* ========================================== */
-/* ✅ سجل النشاطات المحسّن */
-/* ========================================== */
-.activity-item {
-    transition: transform 0.2s;
+/* Minor Badge */
+.minor-card {
+    border-right: 4px solid #fbbf24;
 }
 
-.activity-item:hover {
-    transform: translateX(-3px);
-}
-
-.activity-meta {
-    line-height: 1.6;
-}
-
-.activity-meta strong {
-    color: var(--text-primary);
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+.minor-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.6rem;
+    background: rgba(251, 191, 36, 0.15);
+    color: #fbbf24;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.5rem;
+    vertical-align: middle;
 }
 
 /* ========================================== */
-/* ✅ استجابة للموبايل */
+/* ✅ Responsive Design */
 /* ========================================== */
-@media (max-width: 500px) {
-    .guardian-section,
-    .social-links-section {
-        padding: 0.8rem;
-    }
-    
-    .guardian-header {
-        font-size: 0.85rem;
-    }
-    
-    .guardian-row {
-        font-size: 0.8rem;
-        flex-wrap: wrap;
-    }
-    
-    .minor-badge {
-        font-size: 0.7rem;
-        padding: 0.15rem 0.5rem;
-    }
-}
-/* ===== Responsive ===== */
 @media (max-width: 900px) {
     .sidebar {
         position: fixed;
@@ -1434,6 +1399,8 @@ html, body {
     
     .content-section {
         padding: 1rem;
+        padding-bottom: 6rem; /* مساحة أكبر للموبايل */
+        min-height: calc(100vh - 60px);
     }
     
     .stats-grid {
@@ -1502,5 +1469,24 @@ html, body {
     
     .detail-label {
         min-width: 0;
+    }
+    
+    .guardian-section,
+    .social-links-section {
+        padding: 0.8rem;
+    }
+    
+    .guardian-header {
+        font-size: 0.85rem;
+    }
+    
+    .guardian-row {
+        font-size: 0.8rem;
+        flex-wrap: wrap;
+    }
+    
+    .minor-badge {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.5rem;
     }
 }
