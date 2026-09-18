@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#181d25">
+    <title>لوحة التحكم - مواهب المدية</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+    <div id="adminPanel" class="admin-panel">
+        
+        <!-- Sidebar Overlay -->
+        <div id="sidebarOverlay" class="sidebar-overlay"></div>
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-solid fa-gem"></i>
+                <h2>مواهب المدية</h2>
+                <button id="sidebarClose" class="sidebar-close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" data-section="dashboard">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>لوحة القيادة</span>
+                </button>
+                <button class="nav-btn" data-section="talents">
+                    <i class="fa-solid fa-users"></i>
+                    <span>المواهب</span>
+                    <span class="nav-badge" id="badge-pending">0</span>
+                </button>
+                <button class="nav-btn" data-section="subscribers">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>النشرة البريدية</span>
+                </button>
+                <button class="nav-btn" data-section="suggestions">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <span>الاقتراحات</span>
+                    <span class="nav-badge" id="badge-new">0</span>
+                </button>
+                <button class="nav-btn" data-section="analytics">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>التحليلات</span>
+                </button>
+                <button class="nav-btn" data-section="activity">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>سجل النشاطات</span>
+                </button>
+                <button class="nav-btn" data-section="settings">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>الإعدادات</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="nav-btn logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>تسجيل الخروج</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Top Bar -->
+            <header class="topbar">
+                <button id="menuToggle" class="menu-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h1 id="pageTitle">لوحة القيادة</h1>
+                <div class="topbar-actions">
+                    <a href="../index.html" class="topbar-link" target="_blank">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        <span>الموقع</span>
+                    </a>
+                </div>
+            </header>
+
+            <!-- ===== قسم لوحة القيادة ===== -->
+            <section id="section-dashboard" class="content-section active">
+                <div class="stats-grid">
+                    <div class="stat-card stat-blue">
+                        <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="stat-total-talents">0</span>
+                            <span class="stat-label">إجمالي المواهب</span>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-yellow">
+                        <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="stat-pending">0</span>
+                            <span class="stat-label">قيد الانتظار</span>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-green">
+                        <div class="stat-icon"><i class="fa-solid fa-check-double"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="stat-approved">0</span>
+                            <span class="stat-label">مواهب مقبولة</span>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-purple">
+                        <div class="stat-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="stat-subscribers">0</span>
+                            <span class="stat-label">مشترك في النشرة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-chart-column"></i> إحصائيات المواهب</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="talentsChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-chart-pie"></i> توزيع الفئات</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="categoriesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid" style="margin-top: 1.5rem;">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-clock-rotate-left"></i> آخر المواهب المسجلة</h3>
+                            <button class="view-all-btn" data-goto="talents">عرض الكل <i class="fa-solid fa-arrow-left"></i></button>
+                        </div>
+                        <div id="recent-talents" class="recent-list">
+                            <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...</div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-lightbulb"></i> آخر الاقتراحات</h3>
+                            <button class="view-all-btn" data-goto="suggestions">عرض الكل <i class="fa-solid fa-arrow-left"></i></button>
+                        </div>
+                        <div id="recent-suggestions" class="recent-list">
+                            <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== قسم المواهب ===== -->
+            <section id="section-talents" class="content-section">
+                <div class="section-toolbar">
+                    <div class="toolbar-right">
+                        <div class="filter-tabs">
+                            <button class="filter-btn active" data-filter="pending">
+                                <i class="fa-solid fa-clock"></i> قيد الانتظار
+                            </button>
+                            <button class="filter-btn" data-filter="approved">
+                                <i class="fa-solid fa-check"></i> مقبولة
+                            </button>
+                            <button class="filter-btn" data-filter="rejected">
+                                <i class="fa-solid fa-xmark"></i> مرفوضة
+                            </button>
+                            <button class="filter-btn" data-filter="all">
+                                <i class="fa-solid fa-list"></i> الكل
+                            </button>
+                        </div>
+                    </div>
+                    <div class="toolbar-left">
+                        <div class="search-box">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="text" id="talentsSearch" placeholder="بحث بالاسم، الفئة، البلدية..." />
+                        </div>
+                        <button id="exportTalents" class="action-btn export-btn">
+                            <i class="fa-solid fa-file-csv"></i>
+                            <span>تصدير</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="talents-list" class="items-list">
+                    <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...</div>
+                </div>
+            </section>
+
+            <!-- ===== قسم النشرة البريدية ===== -->
+            <section id="section-subscribers" class="content-section">
+                <div class="section-toolbar">
+                    <div class="toolbar-right">
+                        <h3 class="section-subtitle">
+                            <i class="fa-solid fa-envelope-open-text"></i>
+                            قائمة المشتركين (<span id="subscribers-count">0</span>)
+                        </h3>
+                    </div>
+                    <div class="toolbar-left">
+                        <div class="search-box">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="text" id="subscribersSearch" placeholder="بحث بالبريد..." />
+                        </div>
+                        <button id="exportCSV" class="action-btn export-btn">
+                            <i class="fa-solid fa-file-csv"></i>
+                            <span>تصدير CSV</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="subscribers-list" class="items-list">
+                    <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...</div>
+                </div>
+            </section>
+
+            <!-- ===== قسم الاقتراحات ===== -->
+            <section id="section-suggestions" class="content-section">
+                <div class="section-toolbar">
+                    <div class="toolbar-right">
+                        <div class="filter-tabs">
+                            <button class="filter-btn active" data-filter="new">
+                                <i class="fa-solid fa-envelope"></i> جديد
+                            </button>
+                            <button class="filter-btn" data-filter="processed">
+                                <i class="fa-solid fa-check"></i> تمت المعالجة
+                            </button>
+                            <button class="filter-btn" data-filter="all">
+                                <i class="fa-solid fa-list"></i> الكل
+                            </button>
+                        </div>
+                    </div>
+                    <div class="toolbar-left">
+                        <div class="search-box">
+                            <i class="fa-solid fa-search"></i>
+                            <input type="text" id="suggestionsSearch" placeholder="بحث بالبريد أو المحتوى..." />
+                        </div>
+                    </div>
+                </div>
+
+                <div id="suggestions-list" class="items-list">
+                    <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...</div>
+                </div>
+            </section>
+
+            <!-- ===== قسم التحليلات ===== -->
+            <section id="section-analytics" class="content-section">
+                <div class="analytics-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-chart-line"></i> نمو المواهب (آخر 30 يوم)</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="growthChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-location-dot"></i> التوزيع الجغرافي</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="geoChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== قسم سجل النشاطات ===== -->
+            <section id="section-activity" class="content-section">
+                <div class="section-toolbar">
+                    <div class="toolbar-right">
+                        <h3 class="section-subtitle">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                            آخر النشاطات
+                        </h3>
+                    </div>
+                </div>
+                <div id="activity-list" class="activity-list">
+                    <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...</div>
+                </div>
+            </section>
+
+            <!-- ===== قسم الإعدادات ===== -->
+            <section id="section-settings" class="content-section">
+                <div class="settings-card">
+                    <h3><i class="fa-solid fa-gear"></i> إعدادات النظام</h3>
+                    <div class="settings-group">
+                        <label>تغيير كلمة المرور</label>
+                        <input type="password" id="newPassword" placeholder="كلمة مرور جديدة" />
+                        <button id="changePasswordBtn" class="action-btn export-btn">
+                            <i class="fa-solid fa-save"></i>
+                            <span>حفظ</span>
+                        </button>
+                    </div>
+                    <div class="settings-group">
+                        <label>تصدير جميع البيانات</label>
+                        <button id="exportAllData" class="action-btn export-btn">
+                            <i class="fa-solid fa-download"></i>
+                            <span>تصدير JSON</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ===== Modal تفاصيل الموهبة ===== -->
+    <div id="talentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-user"></i> تفاصيل الموهبة</h3>
+                <button class="modal-close" data-close-modal="talentModal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="talentModalBody"></div>
+        </div>
+    </div>
+
+    <!-- ===== Modal تأكيد الحذف ===== -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header danger-header">
+                <h3><i class="fa-solid fa-triangle-exclamation"></i> تأكيد الحذف</h3>
+                <button class="modal-close" data-close-modal="confirmModal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">هل أنت متأكد من الحذف؟</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" data-close-modal="confirmModal">إلغاء</button>
+                <button id="confirmDeleteBtn" class="btn-danger">
+                    <i class="fa-solid fa-trash"></i> حذف نهائي
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Toast Container ===== -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
