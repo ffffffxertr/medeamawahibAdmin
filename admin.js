@@ -19,7 +19,7 @@ const db = firebase.firestore();
 // ==========================================
 // 2. متغيرات عامة
 // ==========================================
-const ADMIN_PASSWORD = "Medea2026Admin"; // ⚠️ غيّرها لكلمة مرور قوية
+const ADMIN_PASSWORD = "medeaAdmin"; // ⚠️ غيّرها لكلمة مرور قوية
 
 let currentFilter = {
     talents: 'pending',
